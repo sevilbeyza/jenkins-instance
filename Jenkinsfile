@@ -71,10 +71,9 @@ def slavePodTemplate = """
 
         container("buildtools") {               //we add the container in this line before dir 
             dir('deployments/terraform') {      //after adding container we need to add credentials to run the terraform code 
-                withCredentials([usernamePassword(credentialsId: 'packer-build-aws-creds', //put credentials inside dir and take stages in it 
-                passwordVariable: 'AWS_ACCESS_KEY_ID', usernameVariable: 'AWS_SECRET_ACCESS_KEY')]) {
-                  
-                    
+               withCredentials([usernamePassword(credentialsId: 'packer-build-aws-creds',
+                passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {   //put credentials inside dir and take stages in it 
+                
                      stage("Terraform Apply/plan") {
                         if (!params.terraformDestroy) {      //DESTROY SECILI DEGILSE VE APPLY SECILDIYSE ONLY APPLY                       =======> Preventing running together   
                             if (params.terraformApply) {        //If it is not work puts prams.  //IF USER CLICK THE APPLY DO
