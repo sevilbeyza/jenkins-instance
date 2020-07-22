@@ -1,6 +1,6 @@
 def k8slabel = "jenkins-pipeline-${UUID.randomUUID().toString()}"
-
-def slavePodTemplate = """
+//line 20 //we have container to run terraform in it
+def slavePodTemplate = """ 
       metadata:
         labels:
           k8s-label: ${k8slabel}
@@ -17,7 +17,7 @@ def slavePodTemplate = """
                   values:
                   - jenkins-jenkins-master
               topologyKey: "kubernetes.io/hostname"
-        containers:                                           //we have container to run terraform in it 
+        containers:                                            
         - name: buildtools                        
           image: fuchicorp/buildtools
           imagePullPolicy: IfNotPresent
