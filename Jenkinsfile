@@ -17,7 +17,7 @@ def slavePodTemplate = """
                   values:
                   - jenkins-jenkins-master
               topologyKey: "kubernetes.io/hostname"
-        containers:
+        containers:                                           //we have container to run terraform in it 
         - name: buildtools                        
           image: fuchicorp/buildtools
           imagePullPolicy: IfNotPresent
@@ -50,30 +50,41 @@ def slavePodTemplate = """
         parameters([             //hepsini alt alta yazip codu generate yapinca boyle combine oluyor 
             booleanParam(defaultValue: false, description: 'Please select to apply the changes ', name: 'terraformApply'),             // says apply is as defaul not sellected
             booleanParam(defaultValue: false, description: 'Please select to destroy all ', name: 'terraformDestroy'),                 // says destroy is as a defaul not sellected
-            choice(choices: ['us-west-2', 'us-west-1', 'us-east-2', 'us-east-1', 'eu-west-1'], description: 'Please select the region', name: 'aws_region')
+            choice(choices: ['us-west-2', 'us-west-1', 'us-east-2', 'us-east-1', 'eu-west-1'], description: 'Please select the region', name: 'aws_region'),
+            choice(choices: ['dev', 'QA ', 'stage', 'prod'], description: 'Please select an environment ', name: 'Environments')
         ])
     ])
 
-  
-
-
-    podTemplate(name: k8slabel, label: k8slabel, yaml: slavePodTemplate, showRawYaml: false) {
+    podTemplate(name: k8slabel, label: k8slabel, yaml: slavePodTemplate, showRawYaml: false) {    //we have schedule the container on top of nodes
       node(k8slabel) {
           
-        stage("Pull SCM") {
+        stage("Pull SCM") {      //we have statge to pull sorce code 
             //git 'https://github.com/sevilbeyza/jenkins-instance.git'
             git credentialsId: 'githubaccess', url: 'https://github.com/sevilbeyza/jenkins-instance.git'
         }
 
-        stage("Generate Variables") {
-            println("Generate Variables")
+        
+        stage("Generate Variables") {                   //it is generate the veriables 
+          dir('deployments/terraform') {
+          println("Generate Variables")
+            def deployment_configuration_tfvars = """   //created veriable definition. it shoud be very clearly show what for to anther coworker    
+            environment = "${Environment}"           //for "writeFile" we took this file path "deployment_configuration_tfvars"
+            """.stripIndent()                        // .stripIndent() it is remove the empty space 
+            writeFile file: 'deployment_configuration.tfvars', text: "${deployment_configuration_tfvars}"  //here we create the file, tf vars file will give envronment
+            sh 'cat deployment_configuration.tfvars >> dev.tfvars'           //run cat command and make sure that file is created 
+                                            //here what we do we appand the 2 file each other with  >>
+          }   
         }
-
+        
+        
+        
         container("buildtools") {               //we add the container in this line before dir 
-            dir('deployments/terraform') {      //after adding container we need to add credentials to run the terraform code 
-               withCredentials([usernamePassword(credentialsId: 'packer-build-aws-creds',
+            dir('deployments/terraform') {      //after adding container we need to add credentials to run the terraform code //this is spesific folder to run terraform 
+               withCredentials([usernamePassword(credentialsId: "aws-access-${Environments}",  //we have access key and secret key to access the environmet 
                 passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {   //put credentials inside dir and take stages in it 
-                
+                    //print the environment what we chosed dynamicly
+                    println("Selected cred is: aws-access-${Environments}")
+                     
                      stage("Terraform Apply/plan") {
                         if (!params.terraformDestroy) {      //DESTROY SECILI DEGILSE VE APPLY SECILDIYSE ONLY APPLY                       =======> Preventing running together   
                             if (params.terraformApply) {        //If it is not work puts prams.  //IF USER CLICK THE APPLY DO
@@ -81,18 +92,18 @@ def slavePodTemplate = """
                                 sh """
                                 #!/bin/bash
                                 export AWS_DEFAULT_REGION=${params.aws_region}    
-                                source ./setenv.sh dev.tfvars
-                                terraform apply -auto-approve 
-                                """
+                                source ./setenv.sh dev.tfvars   //creating backend.tf based on your configuration
+                                terraform apply -auto-approve -var-file \$DATAFILE   //DATAFILE is after run setnv datafile created automaticly . we added datafile after coplate the generate veriable stage 
+                                """                          // \ mean hey jenkins consider datafile in script 
                             } else {
                                 println("Planing the changes")
                                 sh """
                                 #!/bin/bash
-                                set +ex
+                                set +ex     // means whatever command you are running show me in console 
                                 ls -l
                                 export AWS_DEFAULT_REGION=${aws_region}
                                 source ./setenv.sh dev.tfvars
-                                terraform plan
+                                terraform plan -var-file \$DATAFILE  
                                 """
                             }
                         }
@@ -105,7 +116,7 @@ def slavePodTemplate = """
                             #!/bin/bash
                             export AWS_DEFAULT_REGION=${params.aws_region}
                             source ./setenv.sh dev.tfvars                               
-                            terraform destroy -auto-approve 
+                            terraform destroy -auto-approve -var-file \$DATAFILE 
                             """
                         } else {
                             println("Skiping the destroy")
