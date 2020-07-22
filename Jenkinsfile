@@ -16,7 +16,7 @@ def slavePodTemplate = """
                   operator: In
                   values:
                   - jenkins-jenkins-master
-              topologyKey: "kubernetes.io/hostname"
+              topologyKey: "kubernetes.io/hostname" 
         containers:                                            
         - name: buildtools                        
           image: fuchicorp/buildtools
