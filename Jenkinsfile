@@ -96,7 +96,6 @@ def slavePodTemplate = """
                                 source ./setenv.sh dev.tfvars   //creating backend.tf based on your configuration
                                 TF_LOG=${params.terraform_logs} terraform apply -auto-approve -var-file \$DATAFILE
                                 println("sevil tryin debug mode ===========================================================") 
-                                """                                  //DATAFILE is after run setnv datafile created automaticly . we added datafile after coplate the generate veriable stage 
                                 """                          // \ mean hey jenkins consider datafile in script 
                             } else {
                                 println("Planing the changes")
