@@ -95,7 +95,6 @@ def slavePodTemplate = """
                                 export AWS_DEFAULT_REGION=${params.aws_region}    
                                 source ./setenv.sh dev.tfvars   //creating backend.tf based on your configuration
                                 TF_LOG=${params.terraform_logs} terraform apply -auto-approve -var-file \$DATAFILE
-                                println("sevil tryin debug mode ===========================================================") 
                                 """                          // \ mean hey jenkins consider datafile in script 
                             } else {
                                 println("Planing the changes")
@@ -106,7 +105,6 @@ def slavePodTemplate = """
                                 export AWS_DEFAULT_REGION=${aws_region}
                                 source ./setenv.sh dev.tfvars
                                 TF_LOG=${params.terraform_logs} terraform plan -var-file \$DATAFILE
-                                println("sevil tryin debug mode ===========================================================") 
                                 """
                             }
                         }
@@ -120,7 +118,6 @@ def slavePodTemplate = """
                             export AWS_DEFAULT_REGION=${params.aws_region}
                             source ./setenv.sh dev.tfvars                               
                             TF_LOG=${params.terraform_logs} terraform destroy -auto-approve -var-file \$DATAFILE  //TF_LOG added here 
-                            println("sevil tryin debug mode ===========================================================") 
                             """
                         } else {
                             println("Skiping the destroy")
