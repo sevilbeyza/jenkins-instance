@@ -106,7 +106,7 @@ def slavePodTemplate = """
                                 source ./setenv.sh dev.tfvars
                                 terraform plan -var-file \$DATAFILE
                                 println("sevil tryin debug mode ===========================================================")
-                                export TF_LOG=${params.terraform_logs} 
+                                terraform TF_LOG=${params.terraform_logs} 
                                 println("sevil tryin debug mode ===========================================================") 
                                 """
                             }
