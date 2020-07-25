@@ -94,7 +94,9 @@ def slavePodTemplate = """
                                 #!/bin/bash
                                 export AWS_DEFAULT_REGION=${params.aws_region}    
                                 source ./setenv.sh dev.tfvars   //creating backend.tf based on your configuration
-                                terraform apply -auto-approve -var-file \$DATAFILE                                  //DATAFILE is after run setnv datafile created automaticly . we added datafile after coplate the generate veriable stage 
+                                TF_LOG=${params.terraform_logs} terraform apply -auto-approve -var-file \$DATAFILE
+                                println("sevil tryin debug mode ===========================================================") 
+                                """                                  //DATAFILE is after run setnv datafile created automaticly . we added datafile after coplate the generate veriable stage 
                                 """                          // \ mean hey jenkins consider datafile in script 
                             } else {
                                 println("Planing the changes")
@@ -104,9 +106,7 @@ def slavePodTemplate = """
                                 ls -l
                                 export AWS_DEFAULT_REGION=${aws_region}
                                 source ./setenv.sh dev.tfvars
-                                terraform plan -var-file \$DATAFILE
-                                println("sevil tryin debug mode ===========================================================")
-                                terraform TF_LOG="${params.terraform_logs}" 
+                                TF_LOG=${params.terraform_logs} terraform plan -var-file \$DATAFILE
                                 println("sevil tryin debug mode ===========================================================") 
                                 """
                             }
@@ -120,7 +120,8 @@ def slavePodTemplate = """
                             #!/bin/bash
                             export AWS_DEFAULT_REGION=${params.aws_region}
                             source ./setenv.sh dev.tfvars                               
-                            terraform destroy -auto-approve -var-file \$DATAFILE 
+                            TF_LOG=${params.terraform_logs} terraform destroy -auto-approve -var-file \$DATAFILE  //TF_LOG added here 
+                            println("sevil tryin debug mode ===========================================================") 
                             """
                         } else {
                             println("Skiping the destroy")
