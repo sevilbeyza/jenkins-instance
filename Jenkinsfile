@@ -51,6 +51,7 @@ def slavePodTemplate = """
             booleanParam(defaultValue: false, description: 'Please select to apply the changes ', name: 'terraformApply'),             // says apply is as defaul not sellected
             booleanParam(defaultValue: false, description: 'Please select to destroy all ', name: 'terraformDestroy'),                 // says destroy is as a defaul not sellected
             choice(choices: ['us-west-2', 'us-west-1', 'us-east-2', 'us-east-1', 'eu-west-1'], description: 'Please select the region', name: 'aws_region'),
+            choice(choices: ['TRACE', ' DEBUG', ' INFO', ' WARN', ' ERROR'], description: 'Please select a log', name: 'terraform_logs'), //+ hw2
             choice(choices: ['dev', 'QA ', 'stage', 'prod'], description: 'Please select an environment ', name: 'Environments')
         ])
     ])
@@ -93,7 +94,7 @@ def slavePodTemplate = """
                                 #!/bin/bash
                                 export AWS_DEFAULT_REGION=${params.aws_region}    
                                 source ./setenv.sh dev.tfvars   //creating backend.tf based on your configuration
-                                terraform apply -auto-approve -var-file \$DATAFILE   //DATAFILE is after run setnv datafile created automaticly . we added datafile after coplate the generate veriable stage 
+                                terraform apply -auto-approve -var-file \$DATAFILE                                  //DATAFILE is after run setnv datafile created automaticly . we added datafile after coplate the generate veriable stage 
                                 """                          // \ mean hey jenkins consider datafile in script 
                             } else {
                                 println("Planing the changes")
@@ -103,7 +104,10 @@ def slavePodTemplate = """
                                 ls -l
                                 export AWS_DEFAULT_REGION=${aws_region}
                                 source ./setenv.sh dev.tfvars
-                                terraform plan -var-file \$DATAFILE  
+                                terraform plan -var-file \$DATAFILE
+                                println("sevil tryin debug mode ===========================================================")
+                                TF_LOG=DEBUG terraform 
+                                println("sevil tryin debug mode ===========================================================") 
                                 """
                             }
                         }
