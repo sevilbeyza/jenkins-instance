@@ -72,7 +72,7 @@ def slavePodTemplate = """
         stage("Generate Variables") {                   //it is generate the veriables 
           dir('deployments/terraform') {
           println("Generate Variables")
-            def deployment_configuration_tfvars = """   //created veriable definition. it shoud be very clearly show what for to anther coworker    
+            def deployment_configuration_tfvars = """   
             environment = "${Environment}" //for "writeFile" we took this file path "deployment_configuration_tfvars"
             ami= "${ami_id}"
             Name= "${Name}"
