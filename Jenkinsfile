@@ -66,8 +66,8 @@ def slavePodTemplate = """
         stage("Pull SCM") { 
                //we have statge to pull sorce code 
             //git 'https://github.com/sevilbeyza/jenkins-instance.git'
-            git credentialsId: 'githubaccess', url: '     https://github.com/sevilbeyza/jenkins-instance/tree/jenkins-instance-HW2'
-           
+            git credentialsId: 'githubaccess', url: 'https://github.com/sevilbeyza/jenkins-instance.git'
+            
         }
 
         //DEFINE HERE WHATEWER I DO DYNAMICLY
