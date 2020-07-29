@@ -5,14 +5,16 @@ provider "aws" {
 
 resource "aws_instance" "jenkins" {               //kapali id actik 
     #ami           = "ami-06b9ff7bc5ea67f59"      //we use pramater 
-    #variable "${AWS_image_id}"
+    ##variable "${AWS_image_id}"
     
-    #ami = "${AWS_image_id}"
+    ami = "${var.ami}"
     instance_type = "t2.micro"
     tags = {
       Name = "Jenkins"
     }
   }
+
+  variable "ami"{}
 
 # data "aws_ami" "centos" {      //tuba acikti  kapattik
 #   most_recent = true
