@@ -52,7 +52,8 @@ def slavePodTemplate = """
             booleanParam(defaultValue: false, description: 'Please select to destroy all ', name: 'terraformDestroy'),                 // says destroy is as a defaul not sellected
             choice(choices: ['us-west-2', 'us-west-1', 'us-east-2', 'us-east-1', 'eu-west-1'], description: 'Please select the region', name: 'aws_region'),
             choice(choices: ['TRACE', ' DEBUG', ' INFO', ' WARN', ' ERROR'], description: 'Please select a log', name: 'terraform_logs'), //+ hw2
-            choice(choices: ['dev', 'QA ', 'stage', 'prod'], description: 'Please select an environment ', name: 'Environments')
+            choice(choices: ['dev', 'QA ', 'stage', 'prod'], description: 'Please select an environment ', name: 'Environments'),
+            input message: '', parameters: [string(defaultValue: '', description: 'Please provide an image ID', name: 'AWS_image_id', trim: false)]
         ])
     ])
 
@@ -85,6 +86,7 @@ def slavePodTemplate = """
                 passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {   //put credentials inside dir and take stages in it 
                     //print the environment what we chosed dynamicly
                     println("Selected cred is: aws-access-${Environments}")
+                    println("Selected ami_id is: ${AWS_image_id}") 
                      
                      stage("Terraform Apply/plan") {
                         if (!params.terraformDestroy) {      //DESTROY SECILI DEGILSE VE APPLY SECILDIYSE ONLY APPLY                       =======> Preventing running together   
