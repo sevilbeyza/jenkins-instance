@@ -68,12 +68,14 @@ def slavePodTemplate = """
             git credentialsId: 'githubaccess', url: 'https://github.com/sevilbeyza/jenkins-instance.git'
         }
 
-        
+        //DEFINE HERE WHATEWER I DO DYNAMICLY
         stage("Generate Variables") {                   //it is generate the veriables 
           dir('deployments/terraform') {
           println("Generate Variables")
             def deployment_configuration_tfvars = """   //created veriable definition. it shoud be very clearly show what for to anther coworker    
-            environment = "${Environment}"           //for "writeFile" we took this file path "deployment_configuration_tfvars"
+            environment = "${Environment}" //for "writeFile" we took this file path "deployment_configuration_tfvars"
+            ami= "${ami}
+            Name= "${Name}
             """.stripIndent()                        // .stripIndent() it is remove the empty space 
             writeFile file: 'deployment_configuration.tfvars', text: "${deployment_configuration_tfvars}"  //here we create the file, tf vars file will give envronment
             sh 'cat deployment_configuration.tfvars >> dev.tfvars'           //run cat command and make sure that file is created 
@@ -89,7 +91,7 @@ def slavePodTemplate = """
                 passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {   //put credentials inside dir and take stages in it 
                     //print the environment what we chosed dynamicly
                     println("Selected cred is: aws-access-${Environments}")
-                    println("Selected ami_id is: ${ami}") 
+                    println("Selected ami_id is: c) 
                      
                      stage("Terraform Apply/plan") {
                         if (!params.terraformDestroy) {      //DESTROY SECILI DEGILSE VE APPLY SECILDIYSE ONLY APPLY                       =======> Preventing running together   
