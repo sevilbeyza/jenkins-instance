@@ -54,7 +54,7 @@ def slavePodTemplate = """
             choice(choices: ['us-west-2', 'us-west-1', 'us-east-2', 'us-east-1', 'eu-west-1'], description: 'Please select the region', name: 'aws_region'),
             choice(choices: ['TRACE', ' DEBUG', ' INFO', ' WARN', ' ERROR'], description: 'Please select a log', name: 'terraform_logs'), //+ hw2
             choice(choices: ['dev', 'QA ', 'stage', 'prod'], description: 'Please select an environment ', name: 'Environments'),
-            string(defaultValue: 'None', description: 'Please provide an image ID', name: 'ami', trim: false),
+            string(defaultValue: 'None', description: 'Please provide an image ID', name: 'ami_id', trim: false),
             string(defaultValue: 'None', description: 'Please provide a Name', name: 'Name', trim: false)
            ])
     ])
@@ -74,7 +74,7 @@ def slavePodTemplate = """
           println("Generate Variables")
             def deployment_configuration_tfvars = """   //created veriable definition. it shoud be very clearly show what for to anther coworker    
             environment = "${Environment}" //for "writeFile" we took this file path "deployment_configuration_tfvars"
-            ami= "${ami}"
+            ami= "${ami_id}"
             Name= "${Name}"
             """.stripIndent()                        // .stripIndent() it is remove the empty space 
             writeFile file: 'deployment_configuration.tfvars', text: "${deployment_configuration_tfvars}"  //here we create the file, tf vars file will give envronment
@@ -91,7 +91,7 @@ def slavePodTemplate = """
                 passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {   //put credentials inside dir and take stages in it 
                     //print the environment what we chosed dynamicly
                     println("Selected cred is: aws-access-${Environments}")
-                    println("Selected ami_id is: ${ami}
+                    println("Selected ami_id is: ${ami_id}
                      
                      stage("Terraform Apply/plan") {
                         if (!params.terraformDestroy) {      //DESTROY SECILI DEGILSE VE APPLY SECILDIYSE ONLY APPLY                       =======> Preventing running together   
