@@ -87,7 +87,7 @@ def slavePodTemplate = """
                 passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {   //put credentials inside dir and take stages in it 
                     //print the environment what we chosed dynamicly
                     println("Selected cred is: aws-access-${Environments}")
-                    println("Selected ami_id is: ${AWS_image_id}") 
+                    //println("Selected ami_id is: ${AWS_image_id}") 
                      
                      stage("Terraform Apply/plan") {
                         if (!params.terraformDestroy) {      //DESTROY SECILI DEGILSE VE APPLY SECILDIYSE ONLY APPLY                       =======> Preventing running together   
