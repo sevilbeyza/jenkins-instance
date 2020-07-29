@@ -54,8 +54,8 @@ def slavePodTemplate = """
             choice(choices: ['TRACE', ' DEBUG', ' INFO', ' WARN', ' ERROR'], description: 'Please select a log', name: 'terraform_logs'), //+ hw2
             choice(choices: ['dev', 'QA ', 'stage', 'prod'], description: 'Please select an environment ', name: 'Environments'),
             //string(defaultValue: 'ami-06b9ff7bc5ea67f59', description: 'Please provide an image ID', name: 'AWS_image_id', trim: false) //with default value 
-            string(defaultValue: '', description: 'Please provide an image ID', name: 'AWS_image_id', trim: false)
-            
+            //string(defaultValue: '', description: 'Please provide an image ID', name: 'AWS_image_id', trim: false)
+            input id: 'AWS_image_id', message: 'Please provide an image ID'
         ])
     ])
 
