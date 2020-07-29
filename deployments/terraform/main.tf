@@ -1,8 +1,27 @@
+
 provider "aws" {
-  //version = "2.59"
-  //region = "us-east-1"                                                              when we pramatirized region we dont need this line 
+  version = "2.59"
+  #region = "us-east-1"                                                              when we pramatirized region we dont need this line 
 }
 
+resource "aws_instance" "jenkins" {               //kapali id actik 
+   
+    
+    ami = "${var.ami}"
+    instance_type = "t2.micro"
+    tags = {
+      Name = "${var.Name}"
+    }
+  }
+
+  variable "ami"{}
+  variable "Name"{}
+
+
+
+
+
+  
 # data "aws_ami" "centos" {      //tuba acikti  kapattik
 #   most_recent = true
 #   owners      = ["679593333241"]
@@ -31,11 +50,5 @@ provider "aws" {
 # }
 
 
-  resource "aws_instance" "jenkins" {               //kapali id actik 
-    ami           = "ami-06b9ff7bc5ea67f59"
-    instance_type = "t2.micro"
-    tags = {
-      Name = "Jenkins"
-    }
-  }
+ 
   
