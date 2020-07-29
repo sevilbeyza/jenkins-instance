@@ -47,7 +47,7 @@ def slavePodTemplate = """
     """
 
     properties([
-       [$class: 'RebuildSettings', autoRebuild: false, rebuildDisabled: false], parameters([
+       [$class: 'RebuildSettings', autoRebuild: false, rebuildDisabled: false], parameters
         parameters([             //hepsini alt alta yazip codu generate yapinca boyle combine oluyor 
             booleanParam(defaultValue: false, description: 'Please select to apply the changes ', name: 'terraformApply'),             // says apply is as defaul not sellected
             booleanParam(defaultValue: false, description: 'Please select to destroy all ', name: 'terraformDestroy'),                 // says destroy is as a defaul not sellected
