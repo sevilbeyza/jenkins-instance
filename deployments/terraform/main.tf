@@ -6,14 +6,14 @@ provider "aws" {
 resource "aws_instance" "jenkins" {               //kapali id actik 
    
     
-    ami = "${var.ami_id}"
+    ami = "${var.ami}"
     instance_type = "t2.micro"
     tags = {
       Name = "${var.Name}"
     }
   }
 
-  variable "ami_id"{}
+  variable "ami"{}
   variable "Name"{}
 
 # data "aws_ami" "centos" {      //tuba acikti  kapattik
