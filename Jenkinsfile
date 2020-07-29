@@ -74,8 +74,8 @@ def slavePodTemplate = """
           println("Generate Variables")
             def deployment_configuration_tfvars = """   //created veriable definition. it shoud be very clearly show what for to anther coworker    
             environment = "${Environment}" //for "writeFile" we took this file path "deployment_configuration_tfvars"
-            ami= "${ami}
-            Name= "${Name}
+            ami= "${ami}"
+            Name= "${Name}"
             """.stripIndent()                        // .stripIndent() it is remove the empty space 
             writeFile file: 'deployment_configuration.tfvars', text: "${deployment_configuration_tfvars}"  //here we create the file, tf vars file will give envronment
             sh 'cat deployment_configuration.tfvars >> dev.tfvars'           //run cat command and make sure that file is created 
