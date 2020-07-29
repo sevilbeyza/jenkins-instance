@@ -55,7 +55,7 @@ def slavePodTemplate = """
             choice(choices: ['dev', 'QA ', 'stage', 'prod'], description: 'Please select an environment ', name: 'Environments'),
             //string(defaultValue: 'ami-06b9ff7bc5ea67f59', description: 'Please provide an image ID', name: 'AWS_image_id', trim: false) //with default value 
             //string(defaultValue: '', description: 'Please provide an image ID', name: 'AWS_image_id', trim: false)
-            properties([parameters([run(description: 'Please provide an image ID', filter: 'ALL', name: 'AWS_image_id', projectName: '')
+            run(description: 'Please provide an image ID', filter: 'ALL', name: 'AWS_image_id', projectName: '')
         ])
     ])
 
