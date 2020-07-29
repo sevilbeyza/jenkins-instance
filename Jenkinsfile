@@ -63,9 +63,11 @@ def slavePodTemplate = """
     podTemplate(name: k8slabel, label: k8slabel, yaml: slavePodTemplate, showRawYaml: false) {    //we have schedule the container on top of nodes
       node(k8slabel) {
           
-        stage("Pull SCM") {      //we have statge to pull sorce code 
+        stage("Pull SCM") { 
+               //we have statge to pull sorce code 
             //git 'https://github.com/sevilbeyza/jenkins-instance.git'
-            git credentialsId: 'githubaccess', url: 'https://github.com/sevilbeyza/jenkins-instance.git'
+            git credentialsId: 'githubaccess', url: '     https://github.com/sevilbeyza/jenkins-instance/tree/jenkins-instance-HW2'
+           
         }
 
         //DEFINE HERE WHATEWER I DO DYNAMICLY
