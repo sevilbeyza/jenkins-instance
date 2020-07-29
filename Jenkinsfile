@@ -53,8 +53,8 @@ def slavePodTemplate = """
             choice(choices: ['us-west-2', 'us-west-1', 'us-east-2', 'us-east-1', 'eu-west-1'], description: 'Please select the region', name: 'aws_region'),
             choice(choices: ['TRACE', ' DEBUG', ' INFO', ' WARN', ' ERROR'], description: 'Please select a log', name: 'terraform_logs'), //+ hw2
             choice(choices: ['dev', 'QA ', 'stage', 'prod'], description: 'Please select an environment ', name: 'Environments'),
-           // input message: '', parameters: [string(defaultValue: '', description: 'Please provide an image ID', name: 'AWS_image_id', trim: false)]
-           string(defaultValue: 'ami-06b9ff7bc5ea67f59', description: 'Please provide an image ID', name: 'AWS_image_id', trim: false)
+            //string(defaultValue: 'ami-06b9ff7bc5ea67f59', description: 'Please provide an image ID', name: 'AWS_image_id', trim: false) //with default value 
+            string(defaultValue: '', description: 'Please provide an image ID', name: 'AWS_image_id', trim: false)
         ])
     ])
 
